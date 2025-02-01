@@ -10,26 +10,51 @@ import Link from "next/link";
 //   if (!res.ok) throw new Error("Failed to fetch data");
 //   return res.json();
 // }
-type CloudflareRequestInit = RequestInit & {
+interface CacheStorage {
+  default: Cache;
+}
+interface RequestInitCF extends RequestInit {
   cf?: {
     cacheTtl?: number;
     cacheEverything?: boolean;
   };
-};
+}
+declare const caches: CacheStorage;
 async function getPost() {
   const randomId = Math.floor(Math.random() * 100) + 1;
-  const fetchOptions: CloudflareRequestInit = {
-    cf: {
-      cacheTtl: 30,
-      cacheEverything: true,
-    },
-  };
+  const url = `https://jsonplaceholder.typicode.com/posts/${randomId}`;
 
-  const res = await fetch(
-    `https://jsonplaceholder.typicode.com/posts/${randomId}`,
-    fetchOptions
-  );
+  // Use environment check for Cloudflare
+  if (process.env.NEXT_RUNTIME === "edge") {
+    try {
+      const cacheKey = new Request(url);
+      const cache = caches.default;
+      let response = await cache.match(cacheKey);
 
+      if (!response) {
+        const init: RequestInitCF = {
+          cf: {
+            cacheTtl: 30,
+            cacheEverything: true,
+          },
+        };
+        response = await fetch(url, init);
+        await cache.put(cacheKey, response.clone());
+      }
+
+      if (!response.ok) throw new Error("Failed to fetch data");
+      return response.json();
+    } catch (error) {
+      console.error("Cache error:", error);
+      // Fallback to normal fetch
+      const res = await fetch(url);
+      if (!res.ok) throw new Error("Failed to fetch data");
+      return res.json();
+    }
+  }
+
+  // Fallback for non-edge runtime
+  const res = await fetch(url);
   if (!res.ok) throw new Error("Failed to fetch data");
   return res.json();
 }
