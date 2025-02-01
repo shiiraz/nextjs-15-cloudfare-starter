@@ -8,8 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "pages:build": "npx @cloudflare/next-on-pages",
-"preview": "npm run pages:build && wrangler pages dev",
-"deploy": "npm run pages:build && wrangler pages deploy"
+    "preview": "npm run pages:build && wrangler pages dev",
+    "deploy": "npm run pages:build && wrangler pages deploy"
   },
   "dependencies": {
     "@cloudflare/next-on-pages": "^1.13.7",
@@ -27,5 +27,8 @@
     "eslint-config-next": "15.1.6",
     "typescript": "^5",
     "wrangler": "^3.106.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
   }
 }
