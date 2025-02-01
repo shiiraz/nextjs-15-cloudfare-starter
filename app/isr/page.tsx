@@ -26,7 +26,7 @@ export default async function ISRPage() {
         </h1>
         <h2 className="text-3xl font-bold">Date: {date}</h2>
         <p className="text-xl text-gray-600">
-          Static data revalidated every 30 seconds
+          Static data revalidated every 10 seconds
         </p>
         <PostCard post={post} />
         <p className="text-sm text-gray-500">
