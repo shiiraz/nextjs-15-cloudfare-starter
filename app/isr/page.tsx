@@ -1,12 +1,35 @@
 import PostCard from "@/components/post-card";
 import Link from "next/link";
 
+// async function getPost() {
+//   const randomId = Math.floor(Math.random() * 100) + 1;
+//   const res = await fetch(
+//     `https://jsonplaceholder.typicode.com/posts/${randomId}`,
+//     { next: { revalidate: 30 } }
+//   );
+//   if (!res.ok) throw new Error("Failed to fetch data");
+//   return res.json();
+// }
+type CloudflareRequestInit = RequestInit & {
+  cf?: {
+    cacheTtl?: number;
+    cacheEverything?: boolean;
+  };
+};
 async function getPost() {
   const randomId = Math.floor(Math.random() * 100) + 1;
+  const fetchOptions: CloudflareRequestInit = {
+    cf: {
+      cacheTtl: 30,
+      cacheEverything: true,
+    },
+  };
+
   const res = await fetch(
     `https://jsonplaceholder.typicode.com/posts/${randomId}`,
-    { next: { revalidate: 30 } }
+    fetchOptions
   );
+
   if (!res.ok) throw new Error("Failed to fetch data");
   return res.json();
 }
