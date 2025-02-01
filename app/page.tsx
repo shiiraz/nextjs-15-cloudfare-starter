@@ -29,6 +29,12 @@ export default function Home() {
           >
             Incremental Static Regeneration (ISR)
           </Link>
+          <Link
+            href="/ssg"
+            className="p-4 bg-yellow-500 text-white rounded-lg text-center hover:bg-yellow-600 transition"
+          >
+            Static Site Generation (SSG)
+          </Link>
         </div>
       </div>
     </main>
