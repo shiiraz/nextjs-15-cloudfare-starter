@@ -10,7 +10,7 @@ async function getPost() {
   if (!res.ok) throw new Error("Failed to fetch data");
   return res.json();
 }
-
+export const runtime = "edge"; // Add this line
 export default async function SSRPage() {
   const post = await getPost();
 
