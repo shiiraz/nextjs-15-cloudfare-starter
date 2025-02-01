@@ -11,5 +11,4 @@ NODE_VERSION = "20.16.0"
 [site]
 bucket = ".vercel/output/static"
 
-# Add this line to specify the Pages build output directory
 pages_build_output_dir = ".vercel/output/static"
